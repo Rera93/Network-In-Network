@@ -40,3 +40,12 @@ def model(x):
     x1 = Dense(10)(x1)
     output = Activation('softmax')(x1)
     return output
+
+input_img = Input(shape = (28,28,1))
+NiN = Model(input_img,model(input_img))
+NiN.compile(optimizer='adam',loss = 'categorical_crossentropy')
+x_train,y_train,x_test,y_test = preprocess()
+NiN.fit(x_train,y_train,
+            epochs=10,
+            batch_size=128,
+            shuffle=True)
