@@ -18,3 +18,25 @@ def preprocess():
 
     return (x_train,y_train,x_test,y_test)
 
+def model(x):
+    x1 = Conv2D(11,(1,1),padding = 'same')(x)
+    x1 = Flatten()(x1)
+    x1 = Dense(900,activation = 'relu')(x1)
+    x1 = Dense(900,activation = 'relu')(x1)
+    x1 = Reshape((30,30,1),input_shape = x1.shape)(x1)
+    x1 = Conv2D(11,(1,1),padding = 'same')(x1)
+    x1 = Flatten()(x1)
+    x1 = Dense(400,activation = 'relu')(x1)
+    x1 = Dense(400,activation = 'relu')(x1)
+    x1 = Reshape((20,20,1),input_shape = x1.shape)(x1)
+    x1 = Conv2D(11,(1,1),padding = 'same')(x1)
+    x1 = Flatten()(x1)
+    x1 = Dense(100,activation = 'relu')(x1)
+    x1 = Dense(100,activation = 'relu')(x1)
+    x1 = Reshape((10,10,1),input_shape = x1.shape)(x1)
+    x1 = Conv2D(11,(1,1),padding = 'same')(x1)
+    x1 = AveragePooling2D((2,2),padding = 'same')(x1)
+    x1 = Flatten()(x1)
+    x1 = Dense(10)(x1)
+    output = Activation('softmax')(x1)
+    return output
