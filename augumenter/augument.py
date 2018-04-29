@@ -6,7 +6,13 @@ from random import randint
 # Weighted random image effect, tends towards horizontal flip.
 def random_effect(im):
     r = randint(0,9)
-    if (r < 6):
+    if (r <= 4):
+        # Contrast Stretching
+        return apply_contrast_stretching(im)
+    elif (r==5):
+        # Rotation from -360 to 360 degrees
+        return apply_rotation_lr(im) 
+    elif (r == 6):
         # Horizontal flip.
         return im.transpose(Image.FLIP_LEFT_RIGHT)
     elif (r == 7):
@@ -50,7 +56,7 @@ def normalize_red(intensity):
          
 # Process green band of the image
 def normalize_green(intensity):
-    min_pixel_in = 90 
+    min_pixel_in = 90
     max_pixel_in = 225
 
     min_pixel_out = 0
@@ -60,10 +66,10 @@ def normalize_green(intensity):
     return out_pixel
 
 def normalize_blue(intensity):
-    
-    min_pixel_in = 100
+     
+    min_pixel_in = 100 
     max_pixel_in = 210
-    
+
     min_pixel_out = 0
     max_pixel_out = 255 
 
@@ -86,12 +92,20 @@ def apply_contrast_stretching(image_object):
 
     contrast_stretched_img = Image.merge("RGB", (norm_red, norm_green, norm_blue))
 
-    contrast_stretched_img.show()
+    return contrast_stretched_img
+
+def apply_rotation_lr(image_object):
+
+    random_rot_degree = randint(-360, 360)
+
+    rotated_img = image_object.rotate(random_rot_degree)
+
+    return rotated_img
 
 # Augumenter
-def aug(image, min_size = 599, fill_color = "white"):
+def aug(image, min_size = 299, fill_color = "white"):
     im = Image.open(image)
-    apply_contrast_stretching(im)
+    apply_rotation_lr(im)
     augumented = make_square(random_effect(im), min_size, fill_color)
     augumented.show()
     return augumented
